@@ -1,0 +1,27 @@
+.users-list .user-container:hover {
+    border: .3rem solid #b9b5b547;
+    border-radius: .5rem;
+    cursor: pointer;
+    margin-bottom: .5rem;
+}
+
+.users-list .user-container {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+    display: flex;
+    padding: 0.5rem;
+    align-items: center;
+    width: max-content;
+}
+.users-list .user-container .text-container {
+    margin-left: 1rem;
+}
+.users-list .user-container .img-container img.avatar-img {
+    height: 3rem;
+    width: 3rem;
+    border-radius: 3rem;
+}
+.users-list .user-container .text-container .text-field {
+    font-weight: bolder;
+}
