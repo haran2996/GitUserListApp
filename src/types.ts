@@ -12,15 +12,15 @@ export type UserType = {
 }
 
 export enum APIState {
-    inProgress= 'In Progress',
-    notStarted= 'Not Started',
-    completed= 'Completed',
-    failed= 'Failed'
+    inProgress = 'In Progress',
+    notStarted = 'Not Started',
+    completed = 'Completed',
+    failed = 'Failed'
 }
 
 export enum ActionList {
-    getUsersList= 'GET_USERS_LIST',
-    getUsersDetails= 'GET_USERS_DETAILS',
+    getUsersList = 'GET_USERS_LIST',
+    getUsersDetails = 'GET_USERS_DETAILS',
 }
 
 export type UserListType = Partial<UserType>[];

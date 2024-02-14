@@ -1,4 +1,4 @@
-import {all, call, put, takeLatest} from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { APIState, ActionList, UserListType } from './types';
 import { userSliceActions } from './reducer';
 
@@ -22,10 +22,10 @@ function* getUsersList(action) {
         const userList = yield userListResponse.json();
         const linkHeader = userListResponse.headers.get('link');
         const paginationUrls = {}
-        if(linkHeader) {
+        if (linkHeader) {
             const itr = linkHeader.matchAll(/<([^>]+)>; rel="([a-z]+)"/g);
             let value = itr.next().value;
-            while(value) {
+            while (value) {
                 const fullUrl = value?.[1]
                 const typeOfNavigation = value?.[2]
                 const positionOfOpenCurly = fullUrl?.indexOf('{');
@@ -33,7 +33,7 @@ function* getUsersList(action) {
                 if (typeOfNavigation && url) {
                     paginationUrls[typeOfNavigation] = url;
                 }
-                value=itr.next().value;
+                value = itr.next().value;
             }
         }
         const userDetailsList = yield all(userList.map(user => call(callGetUserApi, { login: user.login }))
@@ -41,7 +41,7 @@ function* getUsersList(action) {
         yield put(userSliceActions.getUsersListCompleted({ userList: userDetailsList, paginationUrls }))
     }
     catch (error) {
-        console.log('error caught in getUsersList',error)
+        console.log('error caught in getUsersList', error)
         yield put(userSliceActions.changeUserDetailsApiState(APIState.failed))
     }
 }

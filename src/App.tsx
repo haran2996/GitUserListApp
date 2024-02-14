@@ -1,5 +1,4 @@
 import { FC } from 'react';
-
 import './style.css';
 import { UserListPage } from './UserListPage';
 import { Provider } from 'react-redux';
