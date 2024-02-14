@@ -1,5 +1,6 @@
-import {takeLatest} from 'redux-saga/effects';
-import { ActionList } from './types';
+import {all, call, put, takeLatest} from 'redux-saga/effects';
+import { APIState, ActionList, UserListType } from './types';
+import { userSliceActions } from './reducer';
 
 function callGetUserApi({ login }: { login: string }) {
     return fetch(`https://api.github.com/users/${login}`, {
@@ -7,14 +8,42 @@ function callGetUserApi({ login }: { login: string }) {
     }).then(resp => resp.json()).catch(error => ({ error }))
 }
 
-function callGetUserListApi({ perPage, since }: { perPage: number, since: number }) {
-    return fetch(`https://api.github.com/users?per_page=${perPage}&since=${since}`, {
+function callGetUserListApi(url: string) {
+    return fetch(url, {
         method: 'get',
-    }).then(resp => resp.json()).catch(error => ({ error }))
+    }).catch(error => ({ error }))
 }
 
-function* getUsersList() {
-    
+function* getUsersList(action) {
+    try {
+        yield put(userSliceActions.changeUserDetailsApiState(APIState.inProgress))
+        const { url } = action.payload;
+        const userListResponse: Response = yield call(callGetUserListApi, url);
+        const userList = yield userListResponse.json();
+        const linkHeader = userListResponse.headers.get('link');
+        const paginationUrls = {}
+        if(linkHeader) {
+            const itr = linkHeader.matchAll(/<([^>]+)>; rel="([a-z]+)"/g);
+            let value = itr.next().value;
+            while(value) {
+                const fullUrl = value?.[1]
+                const typeOfNavigation = value?.[2]
+                const positionOfOpenCurly = fullUrl?.indexOf('{');
+                const url = fullUrl?.substring(0, positionOfOpenCurly >= 0 ? positionOfOpenCurly : fullUrl.length);
+                if (typeOfNavigation && url) {
+                    paginationUrls[typeOfNavigation] = url;
+                }
+                value=itr.next().value;
+            }
+        }
+        const userDetailsList = yield all(userList.map(user => call(callGetUserApi, { login: user.login }))
+        )
+        yield put(userSliceActions.getUsersListCompleted({ userList: userDetailsList, paginationUrls }))
+    }
+    catch (error) {
+        console.log('error caught in getUsersList',error)
+        yield put(userSliceActions.changeUserDetailsApiState(APIState.failed))
+    }
 }
 
 export function* allSagas() {

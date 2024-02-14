@@ -1,34 +1,41 @@
 import { FC, useState } from "react"
 import './Pagination.css'
 export const Pagination: FC<{
-    totalPages: number,
     currentPage: number,
-    handlePageChange: Function,
-    disableButton: boolean
-}> = ({ totalPages, currentPage, handlePageChange, disableButton }) => {
-    const [inputValue, setinputValue] = useState('1');
+    handlePaginationClick: Function,
+    disableButton: boolean,
+    paginationUrls: {
+        first: string,
+        last: string,
+        next: string,
+        prev: string
+    }
+}> = ({ currentPage, handlePaginationClick, disableButton, paginationUrls }) => {
     return <div className="pagination">
-        <div className="showing-text">Showing {currentPage} of {totalPages}</div>
-        <div className="goto-container">
-            <button
-                className="page-button"
-                onClick={() => handlePageChange(inputValue)}
-                disabled={disableButton || !(parseInt(inputValue) >= 1 && parseInt(inputValue) <= totalPages)}>
-                Go To
-            </button>
-            <input
-                className="page-input"
-                value={inputValue}
-                onChange={(e) => {
-                    const { value } = e.target;
-                    if ((parseInt(value) >= 1 && parseInt(value) <= totalPages) || value === '') {
-                        setinputValue(e.target.value)
-                    }
-                }}
-                type="number"
-                min={0}
-                max={totalPages}
-            />
-        </div>
+        {paginationUrls.first && <span
+            className={`first-page pagination-btn${disableButton ? ' disbale-btn' : ''}`}
+            onClick={() => handlePaginationClick('first')}
+        >
+            First
+        </span>}
+        {paginationUrls.prev && <span
+            className={`previous-page pagination-btn${disableButton ? ' disbale-btn' : ''}`}
+            onClick={() => handlePaginationClick('prev')}
+        >
+            Previous
+        </span>}
+        <span className="page-number">{currentPage}</span>
+        {paginationUrls.next && <span
+            className={`next-page pagination-btn${disableButton ? ' disbale-btn' : ''}`}
+            onClick={() => handlePaginationClick('next')}
+        >
+            Next
+        </span>}
+        {paginationUrls.last && <span
+            className={`last-page pagination-btn${disableButton ? ' disbale-btn' : ''}`}
+            onClick={() => handlePaginationClick('last')}
+        >
+            Last
+        </span>}
     </div>
 }
