@@ -1,11 +1,11 @@
 import { FC } from "react";
-import { UserType } from "./types";
+import { UserType } from "../../types";
 import './UsersList.css';
 import * as React from "react";
-export const UsersList: FC<{ usersList: UserType[], handleUserClick: React.MouseEventHandler }> = ({ usersList, handleUserClick }) => {
+export const UsersList: FC<{ usersList: UserType[], handleUserClick: Function }> = ({ usersList, handleUserClick }) => {
     return <div className="users-list">
         {
-            usersList.map(user => <div className="user-container" onClick={handleUserClick}>
+            usersList.map(user => <div key={user.login} className="user-container" onClick={() => handleUserClick(user)}>
                 <div className="img-container">
                     <img className="avatar-img" src={user.avatar_url} alt={`${user.name} avatar`} />
                 </div>

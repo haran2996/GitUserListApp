@@ -8,7 +8,8 @@ export type UserType = {
     following_url: string,
     following: number,
     followers_url: string,
-    followers: number
+    followers: number,
+    company: string
 }
 
 export enum APIState {

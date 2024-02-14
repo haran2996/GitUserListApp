@@ -1,4 +1,4 @@
-import { ActionList } from "./types"
+import { ActionList } from "../types"
 
 export const getUsersListAction = (payload) => {
     return {

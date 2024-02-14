@@ -1,0 +1,22 @@
+.user-details-container {
+    text-align: center;
+}
+
+.user-details-container .img-container .avatar {
+    height: 10rem;
+    width: 10rem;
+    border-radius: 5rem;
+}
+
+.user-details-container .text-feild-container {
+    margin: 1rem auto
+}
+
+.user-details-container .text-feild-container .text-feild {
+    font-weight: bolder;
+    padding: .5rem;
+}
+
+.user-details-container .text-feild-container .text-value {
+    padding: .5rem;
+}
