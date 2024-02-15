@@ -12,22 +12,24 @@ export const UserDetailsPage = () => {
     const currentUserDetails = useSelector((state: any) => state.user.currentUserDetails)
     const userDetailApi = useSelector((state: any) => state.user.userDetailsApiState)
     const navigate = useNavigate();
-    const userId = useParams();
+    const { id: login } = useParams();
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(
-            getUsersDetailsAction({
-                userId
-            })
-        );
-    }, [userId]);
+        if (login) {
+            dispatch(
+                getUsersDetailsAction({
+                    login
+                })
+            );
+        }
+    }, [login]);
     const renderComp = () => {
         if (userDetailApi === APIState.failed)
-        return <ErrorPage />
-    else if (userDetailApi !== APIState.completed)
-        return <Loading />
-    else
-        return <UserDetails userDetails={currentUserDetails} />
+            return <ErrorPage />
+        else if (userDetailApi !== APIState.completed)
+            return <Loading />
+        else
+            return <UserDetails userDetails={currentUserDetails} />
     }
     return <>
         <button onClick={() => navigate('/')}>Back</button>
