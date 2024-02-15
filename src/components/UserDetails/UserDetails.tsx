@@ -26,15 +26,15 @@ export const UserDetails: FC<{
                 {userDetails.twitter_username}
             </span>
         </div>}
-        <div className="text-feild-container">
+        {userDetails.name?.split(' ')[0] && <div className="text-feild-container">
             <span className="text-feild">
                 First Name: 
             </span>
             <span className="text-value">
                 {userDetails.name.split(' ')[0]}
             </span>
-        </div>
-       {userDetails.name.split(' ')?.[1] && <div className="text-feild-container">
+        </div>}
+       {userDetails.name?.split(' ')?.[1] && <div className="text-feild-container">
             <span className="text-feild">
                 Last Name: 
             </span>
